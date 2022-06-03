@@ -28,7 +28,7 @@ Device ChangeLogs :
 - For More BB flash Lawrun 
 
 Credit :
-- Thanks @R15H1 ji for helping me constantly ❤
+- Thanks @R15H1 @Kartik728 @IDontHateTheHatedTransGirl @eun0115 for helping me constantly ❤
 - Thanks @SmrMALIK  for Testing
 - Thanks @eun0115 for Kernel
 - Thanks CherishOS for openSource Which help us to Build Unofficially 
