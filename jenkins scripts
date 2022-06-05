@@ -1,0 +1,55 @@
+#!/bin/bash
+
+DEVICE="$1"
+
+THREAD="-j$(grep -c ^processor /proc/cpuinfo)"
+
+export TZ="Asia/Kolkata"
+export KBUILD_BUILD_USER="$USER"
+
+source build/envsetup.sh
+
+if [ -f "out/.lock" ]; then
+rm out/.lock
+fi
+
+aospa="vendor/aospa/"
+arrow="vendor/arrow/"
+evolutionx="vendor/evolution/"
+
+env=vendor/*/build/envsetup.sh
+is_check="brunch"
+
+if [ -f "$env" ]; then
+    echo "File $env does not exist."
+    exit 1
+fi
+
+if [ -d "$arrow" ]; then
+cmd=$(grep -ci "$is_check" build/envsetup.sh)
+else
+cmd=$(grep -ci "$is_check" $env)
+fi
+
+if [ "$cmd" != "0" ]; then
+    echo "Brunch exists"
+    # roast it :)
+    brunch $DEVICE
+else
+    echo "Brunch does not exist. Time for bacon"
+    if [ -d "$aospa" ]; then
+        echo "aospa rom detected"
+        ./rom-build.sh $DEVICE
+    elif [ -d "$arrow" ]; then
+        echo "arrow rom detected"
+        lunch arrow_$DEVICE-userdebug
+        mka bacon $THREAD
+    elif [ -d "$evolution" ]; then
+        echo "evolution rom detected"
+        lunch evolution_$DEVICE-userdebug
+        mka evolution $THREAD
+    else
+        lunch aosp_$DEVICE-userdebug
+        mka bacon $THREAD
+    fi
+fi
